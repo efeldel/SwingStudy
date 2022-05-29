@@ -1,5 +1,6 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -23,27 +24,26 @@ public class MovingImage {
         } catch (IOException ex) {
             System.out.println("File not found.");
         }
-        JLabel picLabel = new JLabel(new ImageIcon(image));
-        picLabel.setBounds(0,0,100,100);
-        jFrame.add(picLabel);
+        JLabel picLabel = new JLabel(new ImageIcon(image.getScaledInstance(100,100, Image.SCALE_FAST)));
+        jFrame.add(picLabel).setBounds(0,0,100,100);
         ActionListener moveAL = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (coordY == 0 && coordX < 680 ) {
-                    coordX += 10;
-                } else if (coordX == 680 && coordY < 650) {
-                    coordY += 10;
-                } else if (coordY == 650 && coordX > 0) {
-                    coordX -= 10;
+                if (coordY == 0 && coordX < 685 ) {
+                    coordX += 5;
+                } else if (coordX == 685 && coordY < 660) {
+                    coordY += 5;
+                } else if (coordY == 660 && coordX > 0) {
+                    coordX -= 5;
                 } else if (coordX == 0 && coordY > 0) {
-                    coordY -= 10;
+                    coordY -= 5;
                 }
                 picLabel.setLocation(coordX,coordY);
                 jFrame.repaint();
             }
         };
 
-        Timer myTimer = new Timer(50, moveAL);
+        Timer myTimer = new Timer(10, moveAL);
         myTimer.start();
     }
 }
