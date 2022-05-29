@@ -24,18 +24,19 @@ public class MovingImage {
             System.out.println("File not found.");
         }
         JLabel picLabel = new JLabel(new ImageIcon(image));
-        picLabel.setBounds(0,0,210,178);
+        picLabel.setBounds(0,0,100,100);
         jFrame.add(picLabel);
         ActionListener moveAL = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (coordY <= 800) {
+                if (coordY == 0 && coordX < 680 ) {
                     coordX += 10;
+                } else if (coordX == 680 && coordY < 650) {
                     coordY += 10;
-
-                } else {
-                    coordX = 0;
-                    coordY = 0;
+                } else if (coordY == 650 && coordX > 0) {
+                    coordX -= 10;
+                } else if (coordX == 0 && coordY > 0) {
+                    coordY -= 10;
                 }
                 picLabel.setLocation(coordX,coordY);
                 jFrame.repaint();
