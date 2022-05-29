@@ -8,10 +8,13 @@ import java.io.IOException;
 
 
 public class MovingImage {
-    private static BufferedImage image;
-    static int coordX = 0;
-    static int coordY = 0;
     public static void main(String[] args) throws Exception{
+        int coordX = 0;
+        int coordY = 0;
+        int dx = 0;
+        int dy = 0;
+        BufferedImage image = null;
+
         JFrame jFrame = new JFrame();
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jFrame.setBounds(500, 200, 800, 800);
@@ -26,17 +29,23 @@ public class MovingImage {
         jFrame.add(picLabel).setBounds(0,0,100,100);
         while (true) {
         if (coordY == 0 && coordX < 685 ) {
-                    coordX += 1;
-                } else if (coordX == 685 && coordY < 660) {
-                    coordY += 1;
-                } else if (coordY == 660 && coordX > 0) {
-                    coordX -= 1;
-                } else if (coordX == 0 && coordY > 0) {
-                    coordY -= 1;
-                }
-                picLabel.setLocation(coordX,coordY);
-                jFrame.repaint();
-                Thread.sleep(5);
+            dx = 1;
+            dy = 0;
+        } else if (coordX == 685 && coordY < 660) {
+            dx = 0;
+            dy = 1;
+        } else if (coordY == 660 && coordX > 0) {
+            dx = -1;
+            dy = 0;
+        } else if (coordX == 0 && coordY > 0) {
+            dx = 0;
+            dy = -1;
+        }
+            coordX += dx;
+            coordY += dy;
+            picLabel.setLocation(coordX,coordY);
+            jFrame.repaint();
+            Thread.sleep(5);
         }
     }
 }
