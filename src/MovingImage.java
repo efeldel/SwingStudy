@@ -13,6 +13,7 @@ public class MovingImage extends Thread {
     int size = 0;
     BufferedImage image = null;
     JFrame jframe = null;
+    static boolean isWinner = false;
 
     MovingImage(BufferedImage image, JFrame jframe, int size, int place) {
         this.jframe = jframe;
@@ -28,7 +29,7 @@ public class MovingImage extends Thread {
             throw new RuntimeException(e);
         }
         JLabel label = new JLabel(new ImageIcon(image.getScaledInstance(size, size, Image.SCALE_FAST)));
-        do {
+        while (!isWinner) {
             coordX += 1 + (int) (Math.random()*5);
             coordY = (place - 1) * (size + 50);
             jframe.add(label);
@@ -40,7 +41,8 @@ public class MovingImage extends Thread {
                     throw new RuntimeException(e);
                 }
             jframe.repaint();
-        } while (coordX + size <= jframe.getWidth() - 15);
+                if (coordX + size >= jframe.getWidth() - 15) isWinner = true;
+        }
     }
 
     public static void main(String[] args) throws InterruptedException {
