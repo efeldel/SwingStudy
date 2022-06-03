@@ -13,7 +13,7 @@ public class MovingImage extends Thread {
     int size = 0;
     BufferedImage image = null;
     JFrame jframe = null;
-    static boolean isWinner = false;
+    static int winner = 0;
 
     MovingImage(BufferedImage image, JFrame jframe, int size, int place) {
         this.jframe = jframe;
@@ -28,21 +28,23 @@ public class MovingImage extends Thread {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        JLabel label = new JLabel(new ImageIcon(image.getScaledInstance(size, size, Image.SCALE_FAST)));
-        while (!isWinner) {
+        JLabel label = new JLabel(new ImageIcon(image.getScaledInstance(size*2, size, Image.SCALE_FAST)));
+        while (winner == 0) {
             coordX += 1 + (int) (Math.random()*5);
             coordY = (place - 1) * (size + 50);
             jframe.add(label);
-            label.setBounds(coordX,coordY,size,size);
-            label.setLocation(coordX, coordY);
-                try {
-                    Thread.sleep(1);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+            label.setBounds(coordX,coordY,size*2,size);
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             jframe.repaint();
-                if (coordX + size >= jframe.getWidth() - 15) isWinner = true;
+            if (coordX + size*2 >= jframe.getWidth() - 15) winner = place;
         }
+        JLabel text = new JLabel("Победитель: " + winner);
+        jframe.add(text);
+        text.setBounds(jframe.getWidth()/2 - text.getWidth() - 15, jframe.getHeight()/2 - text.getHeight(),100,50);
     }
 
     public static void main(String[] args) throws InterruptedException {
@@ -57,7 +59,7 @@ public class MovingImage extends Thread {
 
 
         try {
-            car = ImageIO.read(new File("smile.jpg"));
+            car = ImageIO.read(new File("car.jpg"));
         } catch (IOException ex) {
             System.out.println("File not found.");
         }
